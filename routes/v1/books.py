@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Namespace, Resource, fields
 from services.book_service import BookService
 
@@ -22,12 +23,10 @@ class BookList(Resource):
     @books_ns.param("author", "Filter by author")
     def get(self):
         """Search books (public)"""
-        title = books_ns.payload.get("title")  # payload is usually for POST/PUT
-        author = books_ns.payload.get("author")
-        # For GET query params, use request.args
-        from flask import request
-        title = request.args.get("title")
-        author = request.args.get("author")
+        # use query params and convert empty strings to None
+        title = request.args.get("title") or None
+        author = request.args.get("author") or None
+
         books = BookService.search_books(title=title, author=author)
 
         result = []
