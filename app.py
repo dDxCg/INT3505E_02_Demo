@@ -1,25 +1,23 @@
 from flask import Flask
 from flask_migrate import Migrate
+from flask_restx import Api
 from config import Config
 from db import db
-
-# routes
-from routes.v1.books import books_bp
-from routes.v1.copies import copies_bp
-from routes.v1.borrows import borrows_bp
+from routes.v1.books import books_ns
+from routes.v1.copies import copies_ns
+from routes.v1.borrows import borrows_ns
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # init db + migrate
     db.init_app(app)
-    migrate = Migrate(app, db)
+    Migrate(app, db)
 
-    # register blueprints
-    app.register_blueprint(books_bp, url_prefix="/api/v1/books")
-    app.register_blueprint(copies_bp, url_prefix="/api/v1/copies")
-    app.register_blueprint(borrows_bp, url_prefix="/api/v1/borrows")
+    api = Api(app, version="1.0", title="Library API", doc="/docs")
+    api.add_namespace(books_ns, path="/api/v1/books")
+    api.add_namespace(copies_ns, path="/api/v1/copies")
+    api.add_namespace(borrows_ns, path="/api/v1/borrows")
 
     return app
 
