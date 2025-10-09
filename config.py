@@ -9,3 +9,5 @@ class Config:
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "fallback-secret-key")
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///library.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CACHE_TYPE = os.getenv("CACHE_TYPE", "SimpleCache")          
+    CACHE_DEFAULT_TIMEOUT = int(os.getenv("CACHE_DEFAULT_TIMEOUT", 120))  
