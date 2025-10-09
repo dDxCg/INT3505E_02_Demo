@@ -46,7 +46,7 @@ def code_on_demand():
     return Response(js_code, mimetype="application/javascript")
 
 # Serve the HTML file from same folder
-@app.route("/")
+@app.route("/index")
 def index():
     return send_from_directory(os.path.dirname(__file__), "index.html")
 
