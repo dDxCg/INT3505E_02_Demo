@@ -3,7 +3,7 @@ from services.copy_service import CopyService
 from flask import request
 
 # Create Namespace
-copies_ns = Namespace("copies", description="Copies operations")
+copies_ns = Namespace("v2_copies", description="Copies operations")
 
 # Swagger model for creating/updating a copy
 copy_model = copies_ns.model(

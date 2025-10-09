@@ -1,0 +1,414 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/api/v2/books/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Search books (public)",
+                "operationId": "list_books",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "description": "Filter by author",
+                        "name": "author",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "description": "Filter by title",
+                        "name": "title",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "books"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Create a new book",
+                "operationId": "create_book",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                ],
+                "tags": [
+                    "books"
+                ]
+            }
+        },
+        "/api/v2/books/admin": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Search books (admin)",
+                "operationId": "search_books_admin",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "description": "Filter by author",
+                        "name": "author",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "description": "Filter by title",
+                        "name": "title",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "description": "Filter by book ID",
+                        "name": "id",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "books"
+                ]
+            }
+        },
+        "/api/v2/books/{book_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The book identifier",
+                    "name": "book_id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Delete a book",
+                "operationId": "delete_book",
+                "tags": [
+                    "books"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update a book",
+                "operationId": "update_book",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                ],
+                "tags": [
+                    "books"
+                ]
+            }
+        },
+        "/api/v2/borrows/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "List borrows (optionally filtered by user)",
+                "operationId": "list_borrows",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "description": "Filter by user ID",
+                        "name": "user_id",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "borrows"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Borrow a book",
+                "operationId": "borrow_book",
+                "parameters": [
+                    {
+                        "required": true,
+                        "in": "query",
+                        "description": "Book ID",
+                        "name": "book_id",
+                        "type": "string"
+                    },
+                    {
+                        "required": true,
+                        "in": "query",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "borrows"
+                ]
+            }
+        },
+        "/api/v2/borrows/{borrow_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Borrow record ID",
+                    "name": "borrow_id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "patch": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Return a borrowed copy",
+                "operationId": "return_borrow",
+                "tags": [
+                    "borrows"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Delete a borrow record",
+                "operationId": "delete_borrow",
+                "tags": [
+                    "borrows"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Admin update borrow record",
+                "operationId": "admin_update_borrow",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Borrow"
+                        }
+                    }
+                ],
+                "tags": [
+                    "borrows"
+                ]
+            }
+        },
+        "/api/v2/copies/book/{book_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The book ID",
+                    "name": "book_id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get all copies for a book",
+                "operationId": "get_copies",
+                "tags": [
+                    "copies"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Create a new copy for a book",
+                "operationId": "create_copy",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Copy"
+                        }
+                    }
+                ],
+                "tags": [
+                    "copies"
+                ]
+            }
+        },
+        "/api/v2/copies/{copy_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The copy ID",
+                    "name": "copy_id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Delete a copy",
+                "operationId": "delete_copy",
+                "tags": [
+                    "copies"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update a copy",
+                "operationId": "update_copy",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Copy"
+                        }
+                    }
+                ],
+                "tags": [
+                    "copies"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Library API",
+        "version": "1.0"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "books",
+            "description": "Books operations"
+        },
+        {
+            "name": "copies",
+            "description": "Copies operations"
+        },
+        {
+            "name": "borrows",
+            "description": "Borrow operations"
+        }
+    ],
+    "definitions": {
+        "Book": {
+            "required": [
+                "author",
+                "title"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Book title"
+                },
+                "author": {
+                    "type": "string",
+                    "description": "Book author"
+                },
+                "year": {
+                    "type": "integer",
+                    "description": "Publication year"
+                }
+            },
+            "type": "object"
+        },
+        "Copy": {
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "Copy status",
+                    "default": "Available"
+                }
+            },
+            "type": "object"
+        },
+        "Borrow": {
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "description": "User ID"
+                },
+                "copy_id": {
+                    "type": "integer",
+                    "description": "Copy ID"
+                },
+                "return_date": {
+                    "type": "string",
+                    "description": "Return date in ISO format"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}

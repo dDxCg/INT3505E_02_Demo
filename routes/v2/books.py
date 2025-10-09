@@ -3,7 +3,7 @@ from flask_restx import Namespace, Resource, fields
 from services.book_service import BookService
 
 # Create Namespace
-books_ns = Namespace("books", description="Books operations")
+books_ns = Namespace("v2_books", description="Books operations")
 
 # Swagger model for creating/updating a book
 book_model = books_ns.model(
