@@ -31,3 +31,10 @@ class UserService:
         if not user:
             return False
         return user.role
+    
+    @staticmethod
+    def get_id(user_email: str) -> int | None:
+        user = User.query.filter_by(email=user_email).first()
+        if not user:
+            return False
+        return user.id

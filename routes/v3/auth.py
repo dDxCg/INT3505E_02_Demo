@@ -5,7 +5,7 @@ from services.user_service import UserService
 from utils.jwt_utils import generate_token
 from utils.require_jwt import require_jwt
 
-v3_auth_ns = Namespace("v3_auth", description="Authentication operations")
+v3_auth_ns = Namespace("v3/auth", description="Authentication operations")
 
 user_model = v3_auth_ns.model("UserRegister", {
     "email": fields.String(required=True, description="Unique email"),
@@ -42,8 +42,8 @@ class Login(Resource):
             return {"message": "Invalid credentials"}, 401
         
         role = UserService.get_role(data["email"])
-
-        token = generate_token(data["email"], role)
+        id = UserService.get_id(data["email"])
+        token = generate_token(id, data["email"], role)
         return {"access_token": token}
 
 @v3_auth_ns.route("/password")

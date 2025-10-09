@@ -3,8 +3,9 @@ import datetime
 from flask import current_app
 from flask import request
 
-def generate_token(email: str, role: str, expires_in: int = 3600) -> str:
+def generate_token(id: int, email: str, role: str, expires_in: int = 3600) -> str:
     payload = {
+        "id": id,
         "email": email,
         "role": role,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=expires_in)

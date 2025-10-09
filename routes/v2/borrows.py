@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import request
 
 # Namespace
-borrows_ns = Namespace("v2_borrows", description="Borrow operations")
+borrows_ns = Namespace("v2/borrows", description="Borrow operations")
 
 # Swagger model for admin update or create borrow
 borrow_model = borrows_ns.model(

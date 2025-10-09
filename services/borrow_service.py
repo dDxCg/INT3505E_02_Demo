@@ -31,6 +31,15 @@ class BorrowService:
 
         db.session.commit()
         return borrow, None
+    
+    @staticmethod
+    def valid_user(borrow_id, user_id):
+        borrow = Borrow.query.get(borrow_id)
+        if not borrow:
+            return None, "Borrow record not found"
+        if borrow.user_id == user_id:
+            return True
+        return False
 
     @staticmethod
     def list_borrows(user_id=None):
