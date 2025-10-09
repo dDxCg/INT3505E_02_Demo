@@ -15,37 +15,31 @@ def create_app():
     db.init_app(app)
     Migrate(app, db)
 
-    # ----- V2 Public API -----
-    api_v2 = Api(
-        app,
-        version="2.0",
-        title="Library API v2",
-        description="Public endpoints (no JWT)",
-        doc="/docs/v2"  # Swagger UI for v2
-    )
-    api_v2.add_namespace(books_ns, path="/api/v2/books")
-    api_v2.add_namespace(copies_ns, path="/api/v2/copies")
-    api_v2.add_namespace(borrows_ns, path="/api/v2/borrows")
-
-    # ----- V3 Secured API -----
     authorizations_v3 = {
-        "Bearer Auth": {
-            "type": "apiKey",
-            "in": "header",
-            "name": "Authorization",
-            "description": "Add 'Bearer <JWT>' to authorize"
+    "Bearer Auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Add 'Bearer <JWT>' here"
         }
     }
 
-    api_v3 = Api(
+    api = Api(
         app,
-        version="3.0",
-        title="Library API v3",
-        description="JWT protected endpoints",
-        doc="/docs/v3",
+        version="1.0",
+        title="Library API",
+        doc="/docs",  # only one Swagger UI
         authorizations=authorizations_v3
     )
-    api_v3.add_namespace(v3_auth_ns, path="/api/v3/auth")
+
+
+    # ----- V2 namespaces (public) -----
+    api.add_namespace(books_ns, path="/api/v2/books")
+    api.add_namespace(copies_ns, path="/api/v2/copies")
+    api.add_namespace(borrows_ns, path="/api/v2/borrows")
+
+    # ----- V3 namespaces (JWT) -----
+    api.add_namespace(v3_auth_ns, path="/api/v3/auth")
 
     return app
 
