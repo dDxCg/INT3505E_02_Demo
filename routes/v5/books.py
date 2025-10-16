@@ -98,3 +98,10 @@ class BookList(Resource):
         response.headers["X-Cache"] = cache_status
         response.headers["X-Cache-Timeout"] = str(Config.CACHE_DEFAULT_TIMEOUT)
         return response
+    
+# @v5_books_ns.route("/_debug_cache")
+# class DebugCache(Resource):
+#     def get(self):
+#         key = "v5_books_None_None_p1_pp10"
+#         val = cache.get(key)
+#         return {"cached": bool(val), "data": val}, 200

@@ -14,19 +14,21 @@ copy_model = v3_admin_copies_ns.model(
     }
 )
 # --- Create / Get copies for a book ---
-@v3_admin_copies_ns.route("/<int:book_id>")
+@v3_admin_copies_ns.route("/")
 @v3_admin_copies_ns.param("book_id", "The book ID")
 class BookCopies(Resource):
     @v3_admin_copies_ns.doc("get_copies")
-    def get(self, book_id):
+    def get(self):
         """Get all copies for a book"""
+        book_id = request.args.get("book_id")
         copies = CopyService.get_copies_by_book(book_id)
         return [{"id": c.id, "book_id": c.book_id, "status": c.status} for c in copies]
 
     @v3_admin_copies_ns.expect(copy_model)
     @v3_admin_copies_ns.doc("create_copy")
-    def post(self, book_id):
+    def post(self):
         """Create a new copy for a book"""
+        book_id = request.args.get("book_id")
         data = v3_admin_copies_ns.payload or {}
         status = data.get("status", "Available")
         copy = CopyService.create_copy(book_id=book_id, status=status)

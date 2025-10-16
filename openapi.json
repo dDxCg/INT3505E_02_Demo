@@ -96,6 +96,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a book",
+        "operationId": "delete_book",
+        "tags": [
+          "v2/books"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -114,18 +126,6 @@
             }
           }
         ],
-        "tags": [
-          "v2/books"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a book",
-        "operationId": "delete_book",
         "tags": [
           "v2/books"
         ]
@@ -191,28 +191,6 @@
           "type": "integer"
         }
       ],
-      "put": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Admin update borrow record",
-        "operationId": "admin_update_borrow",
-        "parameters": [
-          {
-            "name": "payload",
-            "required": true,
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Borrow"
-            }
-          }
-        ],
-        "tags": [
-          "v2/borrows"
-        ]
-      },
       "patch": {
         "responses": {
           "200": {
@@ -233,6 +211,28 @@
         },
         "summary": "Delete a borrow record",
         "operationId": "delete_borrow",
+        "tags": [
+          "v2/borrows"
+        ]
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Admin update borrow record",
+        "operationId": "admin_update_borrow",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Borrow"
+            }
+          }
+        ],
         "tags": [
           "v2/borrows"
         ]
@@ -293,6 +293,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a copy",
+        "operationId": "delete_copy",
+        "tags": [
+          "v2/copies"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -311,18 +323,6 @@
             }
           }
         ],
-        "tags": [
-          "v2/copies"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a copy",
-        "operationId": "delete_copy",
         "tags": [
           "v2/copies"
         ]
@@ -360,6 +360,28 @@
         "tags": [
           "v3/admin/books"
         ]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Create a new book",
+        "operationId": "create_book",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "tags": [
+          "v3/admin/books"
+        ]
       }
     },
     "/v3/admin/books/{book_id}": {
@@ -372,6 +394,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a book",
+        "operationId": "delete_book",
+        "tags": [
+          "v3/admin/books"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -393,18 +427,6 @@
         "tags": [
           "v3/admin/books"
         ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a book",
-        "operationId": "delete_book",
-        "tags": [
-          "v3/admin/books"
-        ]
       }
     },
     "/v3/admin/borrows/{borrow_id}": {
@@ -417,28 +439,6 @@
           "type": "integer"
         }
       ],
-      "put": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Admin update borrow record",
-        "operationId": "admin_update_borrow",
-        "parameters": [
-          {
-            "name": "payload",
-            "required": true,
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Borrow"
-            }
-          }
-        ],
-        "tags": [
-          "v3/admin/borrows"
-        ]
-      },
       "patch": {
         "responses": {
           "200": {
@@ -459,6 +459,28 @@
         },
         "summary": "Delete a borrow record",
         "operationId": "delete_borrow",
+        "tags": [
+          "v3/admin/borrows"
+        ]
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Admin update borrow record",
+        "operationId": "admin_update_borrow",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Borrow"
+            }
+          }
+        ],
         "tags": [
           "v3/admin/borrows"
         ]
@@ -519,6 +541,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a copy",
+        "operationId": "delete_copy",
+        "tags": [
+          "v3/admin/copies"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -537,18 +571,6 @@
             }
           }
         ],
-        "tags": [
-          "v3/admin/copies"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a copy",
-        "operationId": "delete_copy",
         "tags": [
           "v3/admin/copies"
         ]
@@ -591,13 +613,13 @@
       }
     },
     "/v3/auth/password": {
-      "post": {
+      "put": {
         "responses": {
           "401": {
             "description": "Invalid credentials"
           }
         },
-        "operationId": "post_reset_password",
+        "operationId": "put_reset_password",
         "parameters": [
           {
             "name": "payload",
@@ -669,14 +691,14 @@
       }
     },
     "/v3/borrows/": {
-      "get": {
+      "patch": {
         "responses": {
           "200": {
             "description": "Success"
           }
         },
-        "summary": "List borrows (optionally filtered by user)",
-        "operationId": "list_borrows",
+        "summary": "Return a borrowed copy",
+        "operationId": "return_borrow",
         "security": [
           {
             "Bearer Auth": []
@@ -686,14 +708,14 @@
           "v3/borrows"
         ]
       },
-      "patch": {
+      "get": {
         "responses": {
           "200": {
             "description": "Success"
           }
         },
-        "summary": "Return a borrowed copy",
-        "operationId": "return_borrow",
+        "summary": "List borrows (optionally filtered by user)",
+        "operationId": "list_borrows",
         "security": [
           {
             "Bearer Auth": []
@@ -718,13 +740,11 @@
             "description": "Book ID",
             "name": "book_id",
             "type": "string"
-          },
+          }
+        ],
+        "security": [
           {
-            "required": true,
-            "in": "query",
-            "description": "User ID",
-            "name": "user_id",
-            "type": "string"
+            "Bearer Auth": []
           }
         ],
         "tags": [
@@ -800,6 +820,89 @@
           "v4/books"
         ]
       }
+    },
+    "/v5/books/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            },
+            "headers": {
+              "ETag": {
+                "description": "Current ETag of the resource",
+                "type": "string"
+              },
+              "Cache-Control": {
+                "description": "Cache max-age in seconds",
+                "type": "string"
+              },
+              "X-Cache": {
+                "description": "HIT or MISS",
+                "type": "string"
+              },
+              "X-Cache-Timeout": {
+                "description": "Cache TTL in seconds",
+                "type": "string"
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified",
+            "headers": {
+              "ETag": {
+                "description": "Current ETag of the resource",
+                "type": "string"
+              },
+              "Cache-Control": {
+                "description": "Cache max-age in seconds",
+                "type": "string"
+              },
+              "X-Cache": {
+                "description": "HIT or MISS",
+                "type": "string"
+              },
+              "X-Cache-Timeout": {
+                "description": "Cache TTL in seconds",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "operationId": "get_book_list",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 10,
+            "in": "query",
+            "description": "Items per page",
+            "name": "per_page"
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "in": "query",
+            "description": "Page number",
+            "name": "page"
+          },
+          {
+            "in": "query",
+            "description": "Filter by author",
+            "name": "author",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "description": "Filter by title",
+            "name": "title",
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "v5/books"
+        ]
+      }
     }
   },
   "info": {
@@ -859,6 +962,10 @@
     },
     {
       "name": "v4/books",
+      "description": "Books operations"
+    },
+    {
+      "name": "v5/books",
       "description": "Books operations"
     }
   ],
