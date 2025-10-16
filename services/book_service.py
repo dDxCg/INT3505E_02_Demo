@@ -1,5 +1,6 @@
 from models.book import Book
 from db import db
+from sqlalchemy.orm import joinedload
 
 class BookService:
     @staticmethod
@@ -38,7 +39,7 @@ class BookService:
 
     @staticmethod
     def search_books(title=None, author=None):
-        query = Book.query
+        query = Book.query.options(joinedload(Book.copies))
         if title:
             query = query.filter(Book.title.ilike(f"%{title}%"))
         if author:
@@ -47,7 +48,7 @@ class BookService:
 
     @staticmethod
     def admin_search_books(id=None, title=None, author=None):
-        query = Book.query
+        query = Book.query.options(joinedload(Book.copies))
 
         if id is not None:
             query = query.filter(Book.id == id)
@@ -57,3 +58,27 @@ class BookService:
             query = query.filter(Book.author.ilike(f"%{author}%"))
 
         return query.all()
+    
+    @staticmethod
+    def search_books_paginated(title=None, author=None, page=1, per_page=10):
+        query = Book.query.options(joinedload(Book.copies))
+
+        # Filter dynamically
+        if title:
+            query = query.filter(Book.title.ilike(f"%{title}%"))
+        if author:
+            query = query.filter(Book.author.ilike(f"%{author}%"))
+
+        # Get total count before slicing
+        total = query.count()
+
+        # Apply pagination (offset & limit)
+        books = (
+            query
+            .order_by(Book.id)  # consistent order between pages
+            .offset((page - 1) * per_page)
+            .limit(per_page)
+            .all()
+        )
+
+        return books, total

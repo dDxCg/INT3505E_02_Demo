@@ -5,9 +5,9 @@ import hashlib
 from extensions import cache
 from config import Config
 
-v4_books_ns = Namespace("v4/books", description="Books operations")
+v5_books_ns = Namespace("v5/books", description="Books operations")
 
-book_model = v4_books_ns.model(
+book_model = v5_books_ns.model(
     "Book",
     {
         "title": fields.String(required=True, description="Book title"),
@@ -17,9 +17,9 @@ book_model = v4_books_ns.model(
 )
 
 
-@v4_books_ns.route("/")
+@v5_books_ns.route("/")
 class BookList(Resource):
-    @v4_books_ns.doc(
+    @v5_books_ns.doc(
         responses={
             200: ("Success", book_model),
             304: "Not Modified"
@@ -31,13 +31,17 @@ class BookList(Resource):
             "X-Cache-Timeout": "Cache TTL in seconds"
         }
     )
-    @v4_books_ns.param("title", "Filter by title")
-    @v4_books_ns.param("author", "Filter by author")
+    @v5_books_ns.param("title", "Filter by title")
+    @v5_books_ns.param("author", "Filter by author")
+    @v5_books_ns.param("page", "Page number", type=int, default=1)
+    @v5_books_ns.param("per_page", "Items per page", type=int, default=10)
     def get(self):
         title = request.args.get("title") or None
         author = request.args.get("author") or None
+        page = request.args.get("page", 1, type=int)
+        per_page = request.args.get("per_page", 10, type=int)
 
-        cache_key = f"v4_books_{title}_{author}"
+        cache_key = f"v5_books_{title}_{author}_p{page}_pp{per_page}"
         cached_result = cache.get(cache_key)
 
         if cached_result:
@@ -45,7 +49,12 @@ class BookList(Resource):
             cache_status = "HIT"
         else:
             # Fetch fresh data
-            books = BookService.search_books(title=title, author=author)
+            books, total = BookService.search_books_paginated(
+                title=title,
+                author=author,
+                page=page,
+                per_page=per_page
+            )
             payload = []
             for b in books:
                 available_copies = sum(1 for c in b.copies if c.status.lower() == "available")
@@ -56,8 +65,17 @@ class BookList(Resource):
                     "year": b.year,
                     "available_copies": available_copies
                 })
+
+            result = {
+                "items": payload,
+                "total": total,
+                "page": page,
+                "per_page": per_page,
+                "pages": (total + per_page - 1) // per_page
+            }
             # Store in cache
-            cache.set(cache_key, payload)
+            cache.set(cache_key, result)
+            payload = result
             cache_status = "MISS"
         
         # Compute ETag based on payload content
