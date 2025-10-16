@@ -213,18 +213,6 @@
           "v2/borrows"
         ]
       },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a borrow record",
-        "operationId": "delete_borrow",
-        "tags": [
-          "v2/borrows"
-        ]
-      },
       "patch": {
         "responses": {
           "200": {
@@ -233,6 +221,18 @@
         },
         "summary": "Return a borrowed copy",
         "operationId": "return_borrow",
+        "tags": [
+          "v2/borrows"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a borrow record",
+        "operationId": "delete_borrow",
         "tags": [
           "v2/borrows"
         ]
@@ -439,18 +439,6 @@
           "v3/admin/borrows"
         ]
       },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a borrow record",
-        "operationId": "delete_borrow",
-        "tags": [
-          "v3/admin/borrows"
-        ]
-      },
       "patch": {
         "responses": {
           "200": {
@@ -459,6 +447,18 @@
         },
         "summary": "Return a borrowed copy",
         "operationId": "return_borrow",
+        "tags": [
+          "v3/admin/borrows"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a borrow record",
+        "operationId": "delete_borrow",
         "tags": [
           "v3/admin/borrows"
         ]
@@ -686,6 +686,23 @@
           "v3/borrows"
         ]
       },
+      "patch": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return a borrowed copy",
+        "operationId": "return_borrow",
+        "security": [
+          {
+            "Bearer Auth": []
+          }
+        ],
+        "tags": [
+          "v3/borrows"
+        ]
+      },
       "post": {
         "responses": {
           "200": {
@@ -708,23 +725,6 @@
             "description": "User ID",
             "name": "user_id",
             "type": "string"
-          }
-        ],
-        "tags": [
-          "v3/borrows"
-        ]
-      },
-      "patch": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Return a borrowed copy",
-        "operationId": "return_borrow",
-        "security": [
-          {
-            "Bearer Auth": []
           }
         ],
         "tags": [

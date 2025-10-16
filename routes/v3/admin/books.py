@@ -64,3 +64,16 @@ class BookAdmin(Resource):
 
         books = BookService.admin_search_books(**filters)
         return [{"id": b.id, "title": b.title, "author": b.author, "year": b.year} for b in books]
+
+    @v3_admin_books_ns.expect(book_model)
+    @v3_admin_books_ns.doc("create_book")
+    def post(self):
+        """Create a new book"""
+        data = v3_admin_books_ns.payload
+        book = BookService.create_book(data["title"], data["author"], data.get("year"))
+        return {
+            "id": book.id,
+            "title": book.title,
+            "author": book.author,
+            "year": book.year
+        }, 201

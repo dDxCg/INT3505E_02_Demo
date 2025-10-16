@@ -52,7 +52,7 @@ class ResetPassword(Resource):
     @v3_auth_ns.response(401, "Invalid credentials")
     @v3_auth_ns.doc(security="Bearer Auth")
     @require_jwt
-    def post(self):
+    def put(self):
         data = request.json
         email = request.user["email"]
         new_password = data["password"]

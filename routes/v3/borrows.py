@@ -37,11 +37,13 @@ class BorrowOperations(Resource):
         ]
 
     @v3_borrows_ns.doc("borrow_book")
-    @v3_borrows_ns.param("user_id", "User ID", required=True)
+    @v3_borrows_ns.doc(security="Bearer Auth")
     @v3_borrows_ns.param("book_id", "Book ID", required=True)
+    @require_jwt
     def post(self):
         """Borrow a book"""
-        user_id = request.args.get("user_id", type=int)
+        body = request.json
+        user_id = body.user.id
         book_id = request.args.get("book_id", type=int)
         if not user_id or not book_id:
             v3_borrows_ns.abort(400, "Missing user_id or book_id")
