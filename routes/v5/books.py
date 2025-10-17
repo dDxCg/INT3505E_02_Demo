@@ -47,6 +47,7 @@ class BookList(Resource):
         if cached_result:
             payload = cached_result
             cache_status = "HIT"
+            print (cache_status)
         else:
             # Fetch fresh data
             books, total = BookService.search_books_paginated(
@@ -105,3 +106,4 @@ class BookList(Resource):
 #         key = "v5_books_None_None_p1_pp10"
 #         val = cache.get(key)
 #         return {"cached": bool(val), "data": val}, 200
+
