@@ -12,6 +12,7 @@ from .v3.admin.borrows import v3_admin_borrows_ns
 from .v3.admin.copies import v3_admin_copies_ns
 from .v4.books import v4_books_ns
 from .v5.books import v5_books_ns
+from .v6.auth import v6_auth_ns
 
 # Expose all namespaces in a single list for easy registration
 all_namespaces = [
@@ -25,5 +26,6 @@ all_namespaces = [
     v3_admin_borrows_ns,
     v3_admin_copies_ns,
     v4_books_ns,
-    v5_books_ns
+    v5_books_ns,
+    v6_auth_ns
 ]

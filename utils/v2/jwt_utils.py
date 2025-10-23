@@ -1,29 +1,30 @@
 import jwt
 import uuid
 from datetime import datetime, timedelta
-from flask import request, current_app, jsonify
+from flask import make_response, request, current_app, jsonify
 from functools import wraps
 from db import REFRESH_STORE, ACCESS_JTI_BLACKLIST
+from config import Config
 
-JWT_SECRET_KEY = current_app.config["JWT_SECRET_KEY"]
-JWT_ALGO = current_app.config["JWT_ALGO"]
-ACCESS_EXPIRE_MINUTES = current_app.config["ACCESS_EXPIRE_MINUTES"]
-REFRESH_EXPIRE_DAYS = current_app.config["REFRESH_EXPIRE_DAYS"]
+JWT_SECRET_KEY = Config.JWT_SECRET_KEY
+JWT_ALGO = Config.JWT_ALGO
+ACCESS_EXPIRE_MINUTES = Config.ACCESS_EXPIRE_MINUTES
+REFRESH_EXPIRE_DAYS = Config.REFRESH_EXPIRE_DAYS
 
 def now():
     return datetime.utcnow()
 
 def create_access_token(id, role, scopes) -> str:
-    jti = str(uuid.uuidv4())
+    jti = str(uuid.uuid4())
     payload = {
         "id": id,
         "role": role,
-        "scpoes": scopes,
+        "scopes": scopes,
         "jti": jti,
-        "exp": int((now() + timedelta(minutes=ACCESS_EXPIRE_MINUTES)).timestamp())
+        "exp": now() + timedelta(minutes=ACCESS_EXPIRE_MINUTES)
     }
     token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGO)
-    return token. jti
+    return token, jti
 
 def create_refresh_token(id):
     rtid = str(uuid.uuid4())
@@ -54,14 +55,14 @@ def verify_access_token(token):
 def auth_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        auth = request.headers.get("Authorization", "")
-        if not auth.startswith("Bearer "):
-            return jsonify({"msg":"missing token"}), 401
-        token = auth.split(" ",1)[1]
+        token = request.cookies.get("access_token")
+        if not token:
+            return make_response(jsonify({"msg": "missing token"}), 401)
+        # print(token)
         try:
             payload = verify_access_token(token)
         except PermissionError as e:
-            return jsonify({"msg": str(e)}), 401
+            return make_response(jsonify({"msg": str(e)}), 401)
         request.user = payload
         return f(*args, **kwargs)
     return wrapper
