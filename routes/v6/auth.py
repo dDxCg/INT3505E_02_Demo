@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_restx import Namespace, Resource, fields
 from flask import current_app
 from services.user_service import UserService
-from utils.v2.jwt_utils import create_access_token, create_refresh_token, revoke_all_user_refresh, now
+from utils.v2.jwt_utils import create_access_token, create_refresh_token, revoke_all_user_refresh, now, auth_required
 from db import REFRESH_STORE, ACCESS_JTI_BLACKLIST
 from extensions import limiter
 
@@ -13,6 +13,10 @@ v6_auth_ns = Namespace("v6/auth", description="Authentication operations")
 user_model = v6_auth_ns.model("UserRegister", {
     "email": fields.String(required=True, description="Unique email"),
     "password": fields.String(required=True)
+})
+
+change_pass_model = v6_auth_ns.model("ChangePassword", {
+    "password": fields.String(required=True, description="New password"),
 })
 
 
@@ -117,3 +121,18 @@ class Refresh(Resource):
                         # secure=True, #HTTPS
                         expires=REFRESH_STORE[new_rtid]["exp"])
         return res
+
+@v6_auth_ns.route("/password")
+class ResetPassword(Resource):
+    @v6_auth_ns.expect(change_pass_model)
+    @v6_auth_ns.response(401, "Invalid credentials")
+    @v6_auth_ns.doc(security="Bearer Auth")
+    @auth_required
+    def put(self):
+        data = request.json
+        email = request.user["email"]
+        new_password = data["password"]
+        
+        user = UserService.update_password(email, new_password)
+
+        return {"msg": "Password changed"}
