@@ -51,10 +51,7 @@ class Login(Resource):
         role = UserService.get_role(e)
         
         #basic scopes logics:
-        if role == "admin":
-            scopes = ["read", "write"]
-        else:
-            scopes = ["read"]
+        scopes = ["read", "write"] if role == "admin" else ["read"]
 
         #gen access/refresh token
         access, jti = create_access_token(id, role, scopes)
@@ -83,8 +80,16 @@ class Logout(Resource):
         res.set_cookie("refresh_token","",expires=0)
         return res
 
-@v6_auth_ns("/refresh")
+@v6_auth_ns.route("/refresh")
 class Refresh(Resource):
+    @v6_auth_ns.doc(
+        responses={
+            200: "Success",
+            401: "Unauthorized / Invalid Token",
+            429: "Rate limit exceeded"
+        },
+        description="Rotate refresh token and issue a new access token"
+    )
     @limiter.limit("5 per 10 minutes")
     def post(self):
         rtid = request.cookies.get("refresh_token")
@@ -107,10 +112,7 @@ class Refresh(Resource):
         role = user["role"]
         
         #basic scopes logics:
-        if role == "admin":
-            scopes = ["read", "write"]
-        else:
-            scopes = ["read"]
+        scopes = ["read", "write"] if role == "admin" else ["read"]
 
         new_rtid = create_refresh_token(id)
         access, jti = create_access_token(id, role, user["scopes"])

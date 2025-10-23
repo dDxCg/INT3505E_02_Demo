@@ -6,6 +6,7 @@ from config import Config
 from db import db
 from routes import all_namespaces
 from extensions import cache, limiter
+from flask_limiter.errors import RateLimitExceeded
 
 def create_app():
     app = Flask(__name__)
@@ -51,6 +52,16 @@ def create_app():
 
         # Serve dynamically
         return jsonify(spec)
+    
+    # --- Rate Limit handler ---
+    @app.errorhandler(RateLimitExceeded)
+    def handle_rate_limit_exceeded(e):
+        return jsonify({
+            "error": "rate_limit_exceeded",
+            "message": "Too many requests.",
+            "limit": str(e.description)
+        }), 429
+
     
     return app
 
