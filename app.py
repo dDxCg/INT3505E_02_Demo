@@ -5,13 +5,14 @@ from flask_restx import Api
 from config import Config
 from db import db
 from routes import all_namespaces
-from extensions import cache
+from extensions import cache, limiter
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
     cache.init_app(app)
+    limiter.init_app(app)
 
     db.init_app(app)
     Migrate(app, db)

@@ -38,3 +38,10 @@ class UserService:
         if not user:
             return False
         return user.id
+    
+    @staticmethod
+    def get_by_id(id: int) -> User | None:
+        user = User.query.get(id)
+        if not user:
+            return None
+        return user
