@@ -132,7 +132,9 @@ class ResetPassword(Resource):
     @auth_required
     def put(self):
         data = request.json
-        email = request.user["email"]
+        id = request.user["id"]
+        user = UserService.get_by_id(id)
+        email = user["email"]
         new_password = data["password"]
         
         user = UserService.update_password(email, new_password)
