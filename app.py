@@ -10,6 +10,8 @@ from flask_limiter.errors import RateLimitExceeded
 from flask_cors import CORS
 from pymongo.errors import ServerSelectionTimeoutError
 
+
+
 def create_app():
     app = Flask(__name__)
     CORS(app)
@@ -19,6 +21,7 @@ def create_app():
     limiter.init_app(app)
     
     mongo.init_app(app)
+    app.extensions["pymongo"] = mongo
 
     db.init_app(app)
     Migrate(app, db)
@@ -41,7 +44,7 @@ def create_app():
         authorizations=authorizations_v3
     )
 
-
+    
     # Register all namespaces without specifying path
     for ns in all_namespaces:
         api.add_namespace(ns)
@@ -70,16 +73,26 @@ def create_app():
     
     return app
 
-# ---- Test MongoDB ----
-def test_mongo_connection(mongo):
+# --- Test function ---
+def test_mongo_connection(mongo_instance):
+    """
+    Test MongoDB connection and print the connected database name.
+    """
     try:
-        mongo.cx.admin.command("ping")
-        print("✅ MongoDB connection successful")
+        # Ping server
+        pong = mongo_instance.cx.admin.command("ping")
+        print("✅ MongoDB server ping response:", pong)
+
+        # Check selected DB
+        if mongo_instance.db:
+            print("📘 Connected to database:", mongo_instance.db.name)
+        else:
+            print("❌ No database selected. Make sure your MONGO_URI includes a DB name.")
+
     except ServerSelectionTimeoutError as e:
         print(f"❌ MongoDB connection failed: {e}")
 
 if __name__ == "__main__":
     app = create_app()
     test_mongo_connection(mongo)
-
     app.run(debug=True)

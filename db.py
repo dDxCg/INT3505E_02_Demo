@@ -5,3 +5,4 @@ db = SQLAlchemy()
 REFRESH_STORE = {}
 ACCESS_JTI_BLACKLIST = set()
 mongo = PyMongo()
+
