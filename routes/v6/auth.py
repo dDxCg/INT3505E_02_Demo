@@ -56,6 +56,7 @@ class Login(Resource):
         #gen access/refresh token
         access, jti = create_access_token(id, role, scopes)
         rtid = create_refresh_token(id)
+        # print(rtid);
         
         res = make_response({"msg": "success"}, 200)
         res.set_cookie(

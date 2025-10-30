@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Login</title>
+</head>
+
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label>Email:</label><br>
+        <input type="email" id="email" placeholder="Enter email" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" id="password" placeholder="Enter password" required><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        document.getElementById("loginForm").onsubmit = async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/api/v3/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                const token = data.access_token;
+
+                if (token) {
+                    localStorage.setItem("jwt_token", token);
+                    sessionStorage.setItem("jwt_token", token);
+                    console.log("✅ JWT saved:", token);
+                    alert("Login successful!");
+                } else {
+                    console.error("No token found in response:", data);
+                    alert("Login failed: No token returned.");
+                }
+            } catch (err) {
+                console.error("❌ Fetch error:", err);
+                alert("Login failed: Check console for details.");
+            }
+        };
+    </script>
+</body>
+
+</html>
