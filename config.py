@@ -13,4 +13,5 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///library.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = os.getenv("CACHE_TYPE", "SimpleCache")          
-    CACHE_DEFAULT_TIMEOUT = int(os.getenv("CACHE_DEFAULT_TIMEOUT"))  
+    CACHE_DEFAULT_TIMEOUT = int(os.getenv("CACHE_DEFAULT_TIMEOUT")) 
+    MONGO_URI = os.getenv("MONGO_URI") 

@@ -3,11 +3,12 @@ from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_restx import Api
 from config import Config
-from db import db
+from db import db, mongo
 from routes import all_namespaces
 from extensions import cache, limiter
 from flask_limiter.errors import RateLimitExceeded
 from flask_cors import CORS
+from pymongo.errors import ServerSelectionTimeoutError
 
 def create_app():
     app = Flask(__name__)
@@ -16,6 +17,8 @@ def create_app():
 
     cache.init_app(app)
     limiter.init_app(app)
+    
+    mongo.init_app(app)
 
     db.init_app(app)
     Migrate(app, db)
@@ -67,7 +70,16 @@ def create_app():
     
     return app
 
+# ---- Test MongoDB ----
+def test_mongo_connection(mongo):
+    try:
+        mongo.cx.admin.command("ping")
+        print("✅ MongoDB connection successful")
+    except ServerSelectionTimeoutError as e:
+        print(f"❌ MongoDB connection failed: {e}")
 
 if __name__ == "__main__":
     app = create_app()
+    test_mongo_connection(mongo)
+
     app.run(debug=True)
