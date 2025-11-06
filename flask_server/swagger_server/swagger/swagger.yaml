@@ -1,0 +1,1033 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Library API"
+basePath: "/api"
+tags:
+- name: "v2/books"
+  description: "Books operations"
+- name: "v2/copies"
+  description: "Copies operations"
+- name: "v2/borrows"
+  description: "Borrow operations"
+- name: "v3/auth"
+  description: "Authentication operations"
+- name: "v3/books"
+  description: "Books operations"
+- name: "v3/borrows"
+  description: "Borrow operations"
+- name: "v3/admin/books"
+  description: "Admin books routes"
+- name: "v3/admin/borrows"
+  description: "Admin borrows routes"
+- name: "v3/admin/copies"
+  description: "Admin copies routes"
+- name: "v4/books"
+  description: "Books operations"
+- name: "v5/books"
+  description: "Books operations"
+- name: "v6/auth"
+  description: "Authentication operations"
+- name: "v7/books"
+  description: "Book CRUD operations"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /v2/books/:
+    get:
+      tags:
+      - "v2/books"
+      summary: "Search books (public)"
+      operationId: "list_books"
+      parameters:
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_books_controller"
+    post:
+      tags:
+      - "v2/books"
+      summary: "Create a new book"
+      operationId: "create_book"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_books_controller"
+  /v2/books/admin:
+    get:
+      tags:
+      - "v2/books"
+      summary: "Search books (admin)"
+      operationId: "search_books_admin"
+      parameters:
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      - name: "id"
+        in: "query"
+        description: "Filter by book ID"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_books_controller"
+  /v2/books/{book_id}:
+    put:
+      tags:
+      - "v2/books"
+      summary: "Update a book"
+      operationId: "update_book"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book identifier"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_books_controller"
+    delete:
+      tags:
+      - "v2/books"
+      summary: "Delete a book"
+      operationId: "delete_book"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book identifier"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_books_controller"
+  /v2/borrows/:
+    get:
+      tags:
+      - "v2/borrows"
+      summary: "List borrows (optionally filtered by user)"
+      operationId: "list_borrows"
+      parameters:
+      - name: "user_id"
+        in: "query"
+        description: "Filter by user ID"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_borrows_controller"
+    post:
+      tags:
+      - "v2/borrows"
+      summary: "Borrow a book"
+      operationId: "borrow_book"
+      parameters:
+      - name: "book_id"
+        in: "query"
+        description: "Book ID"
+        required: true
+        type: "string"
+      - name: "user_id"
+        in: "query"
+        description: "User ID"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_borrows_controller"
+  /v2/borrows/{borrow_id}:
+    put:
+      tags:
+      - "v2/borrows"
+      summary: "Admin update borrow record"
+      operationId: "admin_update_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Borrow"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_borrows_controller"
+    delete:
+      tags:
+      - "v2/borrows"
+      summary: "Delete a borrow record"
+      operationId: "delete_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_borrows_controller"
+    patch:
+      tags:
+      - "v2/borrows"
+      summary: "Return a borrowed copy"
+      operationId: "return_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_borrows_controller"
+  /v2/copies/book/{book_id}:
+    get:
+      tags:
+      - "v2/copies"
+      summary: "Get all copies for a book"
+      operationId: "get_copies"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_copies_controller"
+    post:
+      tags:
+      - "v2/copies"
+      summary: "Create a new copy for a book"
+      operationId: "create_copy"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book ID"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Copy"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_copies_controller"
+  /v2/copies/{copy_id}:
+    put:
+      tags:
+      - "v2/copies"
+      summary: "Update a copy"
+      operationId: "update_copy"
+      parameters:
+      - name: "copy_id"
+        in: "path"
+        description: "The copy ID"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Copy"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_copies_controller"
+    delete:
+      tags:
+      - "v2/copies"
+      summary: "Delete a copy"
+      operationId: "delete_copy"
+      parameters:
+      - name: "copy_id"
+        in: "path"
+        description: "The copy ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v2_copies_controller"
+  /v3/admin/books/:
+    get:
+      tags:
+      - "v3/admin/books"
+      summary: "Search books (admin)"
+      operationId: "search_books_admin"
+      parameters:
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      - name: "id"
+        in: "query"
+        description: "Filter by book ID"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_books_controller"
+    post:
+      tags:
+      - "v3/admin/books"
+      summary: "Create a new book"
+      operationId: "create_book"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_books_controller"
+  /v3/admin/books/{book_id}:
+    put:
+      tags:
+      - "v3/admin/books"
+      summary: "Update a book"
+      operationId: "update_book"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book identifier"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_books_controller"
+    delete:
+      tags:
+      - "v3/admin/books"
+      summary: "Delete a book"
+      operationId: "delete_book"
+      parameters:
+      - name: "book_id"
+        in: "path"
+        description: "The book identifier"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_books_controller"
+  /v3/admin/borrows/{borrow_id}:
+    put:
+      tags:
+      - "v3/admin/borrows"
+      summary: "Admin update borrow record"
+      operationId: "admin_update_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Borrow"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_borrows_controller"
+    delete:
+      tags:
+      - "v3/admin/borrows"
+      summary: "Delete a borrow record"
+      operationId: "delete_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_borrows_controller"
+    patch:
+      tags:
+      - "v3/admin/borrows"
+      summary: "Return a borrowed copy"
+      operationId: "return_borrow"
+      parameters:
+      - name: "borrow_id"
+        in: "path"
+        description: "Borrow record ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_borrows_controller"
+  /v3/admin/copies/:
+    get:
+      tags:
+      - "v3/admin/copies"
+      summary: "Get all copies for a book"
+      operationId: "get_copies"
+      parameters:
+      - name: "book_id"
+        in: "query"
+        description: "The book ID"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_copies_controller"
+    post:
+      tags:
+      - "v3/admin/copies"
+      summary: "Create a new copy for a book"
+      operationId: "create_copy"
+      parameters:
+      - name: "book_id"
+        in: "query"
+        description: "The book ID"
+        required: false
+        type: "string"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Copy"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_copies_controller"
+  /v3/admin/copies/{copy_id}:
+    put:
+      tags:
+      - "v3/admin/copies"
+      summary: "Update a copy"
+      operationId: "update_copy"
+      parameters:
+      - name: "copy_id"
+        in: "path"
+        description: "The copy ID"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Copy"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_copies_controller"
+    delete:
+      tags:
+      - "v3/admin/copies"
+      summary: "Delete a copy"
+      operationId: "delete_copy"
+      parameters:
+      - name: "copy_id"
+        in: "path"
+        description: "The copy ID"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_admin_copies_controller"
+  /v3/auth/login:
+    post:
+      tags:
+      - "v3/auth"
+      operationId: "post_login"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRegister"
+      - name: "X_Fields"
+        in: "header"
+        description: "An optional fields mask"
+        required: false
+        type: "string"
+        format: "mask"
+      responses:
+        "401":
+          description: "Invalid credentials"
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Token"
+      x-swagger-router-controller: "swagger_server.controllers.v3_auth_controller"
+  /v3/auth/password:
+    put:
+      tags:
+      - "v3/auth"
+      operationId: "put_reset_password"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ChangePassword"
+      security:
+      - Bearer Auth: []
+      responses:
+        "401":
+          description: "Invalid credentials"
+      x-swagger-router-controller: "swagger_server.controllers.v3_auth_controller"
+  /v3/auth/register:
+    post:
+      tags:
+      - "v3/auth"
+      operationId: "post_register"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRegister"
+      responses:
+        "201":
+          description: "User created"
+      x-swagger-router-controller: "swagger_server.controllers.v3_auth_controller"
+  /v3/books/:
+    get:
+      tags:
+      - "v3/books"
+      operationId: "list_books"
+      parameters:
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_books_controller"
+  /v3/borrows/:
+    get:
+      tags:
+      - "v3/borrows"
+      summary: "List borrows (optionally filtered by user)"
+      operationId: "list_borrows"
+      parameters: []
+      security:
+      - Bearer Auth: []
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_borrows_controller"
+    post:
+      tags:
+      - "v3/borrows"
+      summary: "Borrow a book"
+      operationId: "borrow_book"
+      parameters:
+      - name: "book_id"
+        in: "query"
+        description: "Book ID"
+        required: true
+        type: "string"
+      security:
+      - Bearer Auth: []
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_borrows_controller"
+    patch:
+      tags:
+      - "v3/borrows"
+      summary: "Return a borrowed copy"
+      operationId: "return_borrow"
+      parameters: []
+      security:
+      - Bearer Auth: []
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v3_borrows_controller"
+  /v4/books/:
+    get:
+      tags:
+      - "v4/books"
+      operationId: "get_book_list"
+      parameters:
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          headers:
+            ETag:
+              type: "string"
+              description: "Current ETag of the resource"
+            Cache-Control:
+              type: "string"
+              description: "Cache max-age in seconds"
+            X-Cache:
+              type: "string"
+              description: "HIT or MISS"
+            X-Cache-Timeout:
+              type: "string"
+              description: "Cache TTL in seconds"
+          schema:
+            $ref: "#/definitions/Book"
+        "304":
+          description: "Not Modified"
+          headers:
+            ETag:
+              type: "string"
+              description: "Current ETag of the resource"
+            Cache-Control:
+              type: "string"
+              description: "Cache max-age in seconds"
+            X-Cache:
+              type: "string"
+              description: "HIT or MISS"
+            X-Cache-Timeout:
+              type: "string"
+              description: "Cache TTL in seconds"
+      x-swagger-router-controller: "swagger_server.controllers.v4_books_controller"
+  /v5/books/:
+    get:
+      tags:
+      - "v5/books"
+      operationId: "get_book_list"
+      parameters:
+      - name: "per_page"
+        in: "query"
+        description: "Items per page"
+        required: false
+        type: "integer"
+        default: 10
+      - name: "page"
+        in: "query"
+        description: "Page number"
+        required: false
+        type: "integer"
+        default: 1
+      - name: "author"
+        in: "query"
+        description: "Filter by author"
+        required: false
+        type: "string"
+      - name: "title"
+        in: "query"
+        description: "Filter by title"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Success"
+          headers:
+            ETag:
+              type: "string"
+              description: "Current ETag of the resource"
+            Cache-Control:
+              type: "string"
+              description: "Cache max-age in seconds"
+            X-Cache:
+              type: "string"
+              description: "HIT or MISS"
+            X-Cache-Timeout:
+              type: "string"
+              description: "Cache TTL in seconds"
+          schema:
+            $ref: "#/definitions/Book"
+        "304":
+          description: "Not Modified"
+          headers:
+            ETag:
+              type: "string"
+              description: "Current ETag of the resource"
+            Cache-Control:
+              type: "string"
+              description: "Cache max-age in seconds"
+            X-Cache:
+              type: "string"
+              description: "HIT or MISS"
+            X-Cache-Timeout:
+              type: "string"
+              description: "Cache TTL in seconds"
+      x-swagger-router-controller: "swagger_server.controllers.v5_books_controller"
+  /v6/auth/login:
+    post:
+      tags:
+      - "v6/auth"
+      operationId: "post_login"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRegister"
+      responses:
+        "401":
+          description: "Invalid credentials"
+        "400":
+          description: "username/password required"
+      x-swagger-router-controller: "swagger_server.controllers.v6_auth_controller"
+  /v6/auth/logout:
+    post:
+      tags:
+      - "v6/auth"
+      operationId: "post_logout"
+      parameters: []
+      responses:
+        "200":
+          description: "Success"
+      x-swagger-router-controller: "swagger_server.controllers.v6_auth_controller"
+  /v6/auth/password:
+    put:
+      tags:
+      - "v6/auth"
+      operationId: "put_reset_password"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ChangePassword"
+      responses:
+        "401":
+          description: "Invalid credentials"
+      x-swagger-router-controller: "swagger_server.controllers.v6_auth_controller"
+  /v6/auth/refresh:
+    post:
+      tags:
+      - "v6/auth"
+      description: "Rotate refresh token and issue a new access token"
+      operationId: "post_refresh"
+      parameters: []
+      responses:
+        "200":
+          description: "Success"
+        "401":
+          description: "Unauthorized / Invalid Token"
+        "429":
+          description: "Rate limit exceeded"
+      x-swagger-router-controller: "swagger_server.controllers.v6_auth_controller"
+  /v6/auth/register:
+    post:
+      tags:
+      - "v6/auth"
+      operationId: "post_register"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/UserRegister"
+      responses:
+        "201":
+          description: "User created"
+      x-swagger-router-controller: "swagger_server.controllers.v6_auth_controller"
+  /v7/books/:
+    get:
+      tags:
+      - "v7/books"
+      summary: "Get all books or search by query parameters"
+      operationId: "get_book_list"
+      parameters:
+      - name: "title"
+        in: "query"
+        description: "Search by book title"
+        required: false
+        type: "string"
+      - name: "author"
+        in: "query"
+        description: "Search by author name"
+        required: false
+        type: "string"
+      - name: "year"
+        in: "query"
+        description: "Filter by publication year"
+        required: false
+        type: "string"
+      - name: "genre"
+        in: "query"
+        description: "Filter by genre"
+        required: false
+        type: "string"
+      - name: "X_Fields"
+        in: "header"
+        description: "An optional fields mask"
+        required: false
+        type: "string"
+        format: "mask"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BookResponse"
+      x-swagger-router-controller: "swagger_server.controllers.v7_books_controller"
+    post:
+      tags:
+      - "v7/books"
+      summary: "Add a new book"
+      operationId: "post_book_list"
+      parameters:
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "201":
+          description: "Book created"
+      x-swagger-router-controller: "swagger_server.controllers.v7_books_controller"
+  /v7/books/{id}:
+    get:
+      tags:
+      - "v7/books"
+      summary: "Get a single book by ID"
+      operationId: "get_book"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Book ID"
+        required: true
+        type: "string"
+      - name: "X_Fields"
+        in: "header"
+        description: "An optional fields mask"
+        required: false
+        type: "string"
+        format: "mask"
+      responses:
+        "404":
+          description: "Book not found"
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/BookResponse"
+      x-swagger-router-controller: "swagger_server.controllers.v7_books_controller"
+    put:
+      tags:
+      - "v7/books"
+      summary: "Update a book"
+      operationId: "put_book"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Book ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "payload"
+        required: true
+        schema:
+          $ref: "#/definitions/Book"
+      responses:
+        "200":
+          description: "Book updated"
+      x-swagger-router-controller: "swagger_server.controllers.v7_books_controller"
+    delete:
+      tags:
+      - "v7/books"
+      summary: "Delete a book"
+      operationId: "delete_book"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Book ID"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Book deleted"
+      x-swagger-router-controller: "swagger_server.controllers.v7_books_controller"
+securityDefinitions:
+  Bearer Auth:
+    description: "Add 'Bearer <JWT>' here"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    x-apikeyInfoFunc: "swagger_server.controllers.authorization_controller.check_Bearer\
+      \ Auth"
+definitions:
+  Book:
+    type: "object"
+    required:
+    - "author"
+    - "title"
+    properties:
+      title:
+        type: "string"
+        description: "Book title"
+      author:
+        type: "string"
+        description: "Author name"
+      year:
+        type: "integer"
+        description: "Publication year"
+      genre:
+        type: "string"
+        description: "Genre"
+    example:
+      year: 0
+      author: "author"
+      genre: "genre"
+      title: "title"
+  Copy:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "Copy status"
+        default: "Available"
+    example:
+      status: "Available"
+  Borrow:
+    type: "object"
+    properties:
+      user_id:
+        type: "integer"
+        description: "User ID"
+      copy_id:
+        type: "integer"
+        description: "Copy ID"
+      return_date:
+        type: "string"
+        description: "Return date in ISO format"
+    example:
+      copy_id: 6
+      user_id: 0
+      return_date: "return_date"
+  UserRegister:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+        description: "Unique email"
+      password:
+        type: "string"
+    example:
+      password: "password"
+      email: "email"
+  Token:
+    type: "object"
+    properties:
+      access_token:
+        type: "string"
+        description: "JWT access token"
+    example:
+      access_token: "access_token"
+  ChangePassword:
+    type: "object"
+    required:
+    - "password"
+    properties:
+      password:
+        type: "string"
+        description: "New password"
+    example:
+      password: "password"
+  BookResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Book ID"
+      title:
+        type: "string"
+        description: "Book title"
+      author:
+        type: "string"
+        description: "Author name"
+      year:
+        type: "integer"
+        description: "Publication year"
+      genre:
+        type: "string"
+        description: "Genre"
+    example:
+      year: 0
+      author: "author"
+      genre: "genre"
+      id: "id"
+      title: "title"
+responses:
+  ParseError:
+    description: "When a mask can't be parsed"
+  MaskError:
+    description: "When any error occurs on mask"

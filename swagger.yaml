@@ -96,6 +96,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a book",
+        "operationId": "delete_book",
+        "tags": [
+          "v2/books"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -114,18 +126,6 @@
             }
           }
         ],
-        "tags": [
-          "v2/books"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a book",
-        "operationId": "delete_book",
         "tags": [
           "v2/books"
         ]
@@ -191,6 +191,30 @@
           "type": "integer"
         }
       ],
+      "patch": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return a borrowed copy",
+        "operationId": "return_borrow",
+        "tags": [
+          "v2/borrows"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a borrow record",
+        "operationId": "delete_borrow",
+        "tags": [
+          "v2/borrows"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -209,30 +233,6 @@
             }
           }
         ],
-        "tags": [
-          "v2/borrows"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a borrow record",
-        "operationId": "delete_borrow",
-        "tags": [
-          "v2/borrows"
-        ]
-      },
-      "patch": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Return a borrowed copy",
-        "operationId": "return_borrow",
         "tags": [
           "v2/borrows"
         ]
@@ -293,6 +293,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a copy",
+        "operationId": "delete_copy",
+        "tags": [
+          "v2/copies"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -311,18 +323,6 @@
             }
           }
         ],
-        "tags": [
-          "v2/copies"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a copy",
-        "operationId": "delete_copy",
         "tags": [
           "v2/copies"
         ]
@@ -394,6 +394,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a book",
+        "operationId": "delete_book",
+        "tags": [
+          "v3/admin/books"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -415,18 +427,6 @@
         "tags": [
           "v3/admin/books"
         ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a book",
-        "operationId": "delete_book",
-        "tags": [
-          "v3/admin/books"
-        ]
       }
     },
     "/v3/admin/borrows/{borrow_id}": {
@@ -439,6 +439,30 @@
           "type": "integer"
         }
       ],
+      "patch": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return a borrowed copy",
+        "operationId": "return_borrow",
+        "tags": [
+          "v3/admin/borrows"
+        ]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a borrow record",
+        "operationId": "delete_borrow",
+        "tags": [
+          "v3/admin/borrows"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -457,30 +481,6 @@
             }
           }
         ],
-        "tags": [
-          "v3/admin/borrows"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a borrow record",
-        "operationId": "delete_borrow",
-        "tags": [
-          "v3/admin/borrows"
-        ]
-      },
-      "patch": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Return a borrowed copy",
-        "operationId": "return_borrow",
         "tags": [
           "v3/admin/borrows"
         ]
@@ -540,6 +540,18 @@
           "type": "integer"
         }
       ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a copy",
+        "operationId": "delete_copy",
+        "tags": [
+          "v3/admin/copies"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -558,18 +570,6 @@
             }
           }
         ],
-        "tags": [
-          "v3/admin/copies"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        },
-        "summary": "Delete a copy",
-        "operationId": "delete_copy",
         "tags": [
           "v3/admin/copies"
         ]
@@ -690,14 +690,14 @@
       }
     },
     "/v3/borrows/": {
-      "get": {
+      "patch": {
         "responses": {
           "200": {
             "description": "Success"
           }
         },
-        "summary": "List borrows (optionally filtered by user)",
-        "operationId": "list_borrows",
+        "summary": "Return a borrowed copy",
+        "operationId": "return_borrow",
         "security": [
           {
             "Bearer Auth": []
@@ -707,14 +707,14 @@
           "v3/borrows"
         ]
       },
-      "patch": {
+      "get": {
         "responses": {
           "200": {
             "description": "Success"
           }
         },
-        "summary": "Return a borrowed copy",
-        "operationId": "return_borrow",
+        "summary": "List borrows (optionally filtered by user)",
+        "operationId": "list_borrows",
         "security": [
           {
             "Bearer Auth": []
@@ -1120,6 +1120,18 @@
           "v7/books"
         ]
       },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Book deleted"
+          }
+        },
+        "summary": "Delete a book",
+        "operationId": "delete_book",
+        "tags": [
+          "v7/books"
+        ]
+      },
       "put": {
         "responses": {
           "200": {
@@ -1138,18 +1150,6 @@
             }
           }
         ],
-        "tags": [
-          "v7/books"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Book deleted"
-          }
-        },
-        "summary": "Delete a book",
-        "operationId": "delete_book",
         "tags": [
           "v7/books"
         ]

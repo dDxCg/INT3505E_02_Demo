@@ -20,8 +20,8 @@ def create_app():
     cache.init_app(app)
     limiter.init_app(app)
     
-    mongo.init_app(app)
-    app.extensions["pymongo"] = mongo
+    # mongo.init_app(app)
+    # app.extensions["pymongo"] = mongo
 
     db.init_app(app)
     Migrate(app, db)
@@ -50,12 +50,12 @@ def create_app():
         api.add_namespace(ns)
 
     # --- OpenAPI JSON endpoint ---
-    @app.route("/openapi.json")
+    @app.route("/swagger.yaml")
     def openapi_json():
         spec = api.__schema__
 
         # Save in same folder as app.py
-        with open("openapi.json", "w") as f:
+        with open("swagger.yaml", "w") as f:
             json.dump(spec, f, indent=2)
 
         # Serve dynamically
@@ -94,5 +94,5 @@ def test_mongo_connection(mongo_instance):
 
 if __name__ == "__main__":
     app = create_app()
-    test_mongo_connection(mongo)
+    # test_mongo_connection(mongo)
     app.run(debug=True)
