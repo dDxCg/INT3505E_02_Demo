@@ -28,6 +28,28 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 201\", function () {",
+							"  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							"",
+							"const json = pm.response.json();",
+							"",
+							"pm.test(\"User created successfully\", function () {",
+							"  pm.expect(json.msg).to.eql(\"User created\");",
+							"});",
+							"",
+							"console.log(\"✅ Registered new user:\", pm.environment.get(\"email\"));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
 				}
 			],
 			"request": {
@@ -64,6 +86,35 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const json = pm.response.json();",
+							"",
+							"pm.test(\"Login successful\", function () {",
+							"  pm.expect(json.msg).to.eql(\"success\");",
+							"});",
+							"",
+							"pm.test(\"Access token cookie set\", function () {",
+							"  const cookies = pm.cookies;",
+							"  pm.expect(Object.keys(cookies).length).to.be.above(0);",
+							"});",
+							"",
+							"console.log(\"🔐 Logged in, cookies stored:\", pm.cookies);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -129,6 +180,30 @@
 							"} else {",
 							"  console.warn(\"Password not updated. Response code:\", pm.response.code);",
 							"}",
+							"",
+							"// ================================",
+							"// TEST CASES",
+							"// ================================",
+							"pm.test(\"Response code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response body is JSON\", function () {",
+							"    pm.expect(() => pm.response.json()).to.not.throw();",
+							"});",
+							"",
+							"pm.test(\"Request body contains password\", function () {",
+							"    pm.expect(body).to.have.property(\"password\");",
+							"    pm.expect(newPassword).to.be.a(\"string\").and.to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Password updated in environment if response is OK\", function () {",
+							"    if (pm.response.code === 200 && newPassword) {",
+							"        pm.expect(pm.environment.get(\"password\")).to.eql(newPassword);",
+							"    } else {",
+							"        pm.expect(pm.environment.get(\"password\")).to.not.eql(newPassword);",
+							"    }",
+							"});",
 							""
 						],
 						"type": "text/javascript",
@@ -171,6 +246,34 @@
 		},
 		{
 			"name": "Refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const json = pm.response.json();",
+							"",
+							"pm.test(\"Token refreshed\", function () {",
+							"  pm.expect(json.msg).to.eql(\"refresh\");",
+							"});",
+							"",
+							"pm.test(\"New cookies set\", function () {",
+							"  pm.expect(Object.keys(pm.cookies).length).to.be.above(0);",
+							"});",
+							"",
+							"console.log(\"♻️ Token refreshed successfully\");",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -196,6 +299,30 @@
 		},
 		{
 			"name": "Log out",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const json = pm.response.json();",
+							"",
+							"pm.test(\"Logged out successfully\", function () {",
+							"  pm.expect(json.msg).to.eql(\"logged out\");",
+							"});",
+							"",
+							"console.log(\"🚪 Logged out, clearing cookies...\");",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],

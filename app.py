@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 from flask_restx import Api
 from config import Config
@@ -48,6 +48,7 @@ def create_app():
     # Register all namespaces without specifying path
     for ns in all_namespaces:
         api.add_namespace(ns)
+
 
     # --- OpenAPI JSON endpoint ---
     @app.route("/swagger.yaml")
