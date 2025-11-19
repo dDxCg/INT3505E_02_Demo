@@ -15,3 +15,4 @@ class Config:
     CACHE_TYPE = os.getenv("CACHE_TYPE", "SimpleCache")          
     CACHE_DEFAULT_TIMEOUT = int(os.getenv("CACHE_DEFAULT_TIMEOUT")) 
     MONGO_URI = os.getenv("MONGO_URI") 
+    REDIS_URI = os.getenv("REDIS_URI", "redis://:<password>@redis-16478.crce185.ap-seast-1-1.ec2.cloud.redislabs.com:16478/0")
