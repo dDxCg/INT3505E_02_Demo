@@ -83,6 +83,8 @@ ordered-set==4.1.0
     # via flask-limiter
 packaging==25.0
     # via limits
+prometheus-client==0.23.1
+    # via -r requirements.in
 psycopg[binary]==3.2.12
     # via -r requirements.in
 psycopg-binary==3.2.12

@@ -21,3 +21,4 @@ redis>=5.0.0
 # Optional utilities
 python-dateutil>=2.8.2
 python-dotenv>=1.1.1
+prometheus_client>=0.17.0
