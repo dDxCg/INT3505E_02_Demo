@@ -97,6 +97,8 @@ python-dateutil==2.9.0.post0
     # via -r requirements.in
 python-dotenv==1.2.1
     # via -r requirements.in
+redis==7.0.1
+    # via -r requirements.in
 referencing==0.37.0
     # via
     #   flask-restx

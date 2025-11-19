@@ -16,6 +16,7 @@ flask-cors>=6.0.1
 SQLAlchemy>=2.0.44
 psycopg[binary]>=3.2.12
 alembic>=1.16.5
+redis>=5.0.0
 
 # Optional utilities
 python-dateutil>=2.8.2
