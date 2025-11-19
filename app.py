@@ -93,7 +93,8 @@ def test_mongo_connection(mongo_instance):
     except ServerSelectionTimeoutError as e:
         print(f"❌ MongoDB connection failed: {e}")
 
+app = create_app()
+
 if __name__ == "__main__":
-    app = create_app()
     # test_mongo_connection(mongo)
     app.run(debug=True)
